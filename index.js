@@ -1,5 +1,4 @@
 var create     = require('./create')
-var ssbKeys    = require('ssb-keys')
 var path       = require('path')
 var osenv      = require('osenv')
 var mkdirp     = require('mkdirp')
@@ -26,6 +25,8 @@ module.exports = {
     anonymous: {allow: ['createHistoryStream'], deny: null}
   },
   init: function (api, opts) {
+    var ssbKeys = opts.passwordProtected ? require('ssb-keys-password-protected')(opts.encrypt, opts.decrypt) : require('ssb-keys')
+
     // .temp: use a /tmp data directory
     // (useful for testing)
     if(opts.temp) {

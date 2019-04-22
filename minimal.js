@@ -6,8 +6,6 @@ var AsyncWrite = require('async-write')
 var V = require('ssb-validate')
 var timestamp = require('monotonic-timestamp')
 var Obv = require('obv')
-var ssbKeys = require('ssb-keys')
-var box = ssbKeys.box
 var u = require('./util')
 var isFeed = require('ssb-ref').isFeed
 
@@ -45,6 +43,9 @@ function isString (s) {
 }
 
 module.exports = function (dirname, keys, opts, map) {
+  var ssbKeys = opts && opts.passwordProtected ? require('ssb-keys-password-protected')(opts.encrypt, opts.decrypt) : require('ssb-keys')
+  var box = ssbKeys.box
+
   var hmacKey = opts && opts.caps && opts.caps.sign
 
   var log = OffsetLog(path.join(dirname, 'log.offset'), { blockSize: 1024 * 16, codec })

@@ -1,11 +1,11 @@
 'use strict'
 var tape = require('tape')
 var pull = require('pull-stream')
-var ssbKeys = require('ssb-keys')
 
 var createSSB = require('./util')
 
 module.exports = function (opts) {
+  var ssbKeys = opts.passwordProtected ? require('ssb-keys-password-protected') : require('ssb-keys')
   var alice = ssbKeys.generate()
   var bob = ssbKeys.generate()
   var charles = ssbKeys.generate()

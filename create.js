@@ -7,7 +7,6 @@ var ltgt = require('ltgt')
 
 var pull = require('pull-stream')
 var ref = require('ssb-ref')
-var ssbKeys = require('ssb-keys')
 
 var u = require('./util')
 
@@ -20,6 +19,8 @@ function errorCB (err) {
 }
 
 module.exports = function (path, opts, keys) {
+  var ssbKeys = opts.passwordProtected ? require('ssb-keys-password-protected')(opts) : require('ssb-keys')
+
   //_ was legacy db. removed that, but for backwards compatibilty reasons do not change interface
   if(!path) throw new Error('path must be provided')
 
