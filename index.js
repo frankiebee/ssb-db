@@ -26,7 +26,6 @@ module.exports = {
     anonymous: {allow: ['createHistoryStream'], deny: null}
   },
   init: function (api, opts) {
-
     // .temp: use a /tmp data directory
     // (useful for testing)
     if(opts.temp) {

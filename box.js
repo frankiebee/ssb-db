@@ -1,4 +1,3 @@
-var ssbKeys = require('ssb-keys')
 var u = require('./util')
 
 function isString (s) {
@@ -8,7 +7,7 @@ function isString (s) {
 var isArray = Array.isArray
 function isFunction (f) { return typeof f === 'function' }
 
-function unbox (data, unboxers, key) {
+function unbox (data, unboxers, key, ssbKeys) {
   var plaintext
   if (data && isString(data.value.content)) {
     for (var i = 0; i < unboxers.length; i++) {
@@ -50,14 +49,14 @@ function unbox (data, unboxers, key) {
 
 
 module.exports = function (keys, opts) {
-
+  var ssbKeys = require('ssb-keys-password-protected')(opts.encrypt, opts.decrypt)
   var mainUnboxer = {
     key: function (content) { return ssbKeys.unboxKey(content, keys) },
     value: function (content, key) { return ssbKeys.unboxBody(content, key) }
   }
 
-  function _unbox (data, key) {
-    return unbox(data, unboxers, key)
+  function _unbox (data, key, ssbKeys) {
+    return unbox(data, unboxers, key, ssbKeys)
   }
 
   var unboxers = [ mainUnboxer ]
